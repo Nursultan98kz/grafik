@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#173d32">
+  <title>ZETA — График регионов</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">Z</div>
+    <div class="brand-copy"><strong>ZETA</strong><span>Планирование регионов</span></div>
+    <div class="topbar-actions">
+      <button class="btn btn-light" id="exportCsvBtn" type="button">Экспорт CSV</button>
+      <button class="btn btn-primary" id="exportPdfBtn" type="button">↓ Скачать PDF</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">ПЛАНИРОВАНИЕ И КОНТРОЛЬ</p>
+        <h1>График постановки регионов</h1>
+        <p class="subtitle">Планируйте даты, назначайте ответственных и держите все регионы под контролем.</p>
+      </div>
+      <div class="period-box">
+        <label for="monthFilter">Период отображения</label>
+        <input id="monthFilter" type="month">
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Сводка">
+      <article class="stat-card"><span>Всего записей</span><strong id="totalCount">0</strong><small>В выбранном периоде</small></article>
+      <article class="stat-card"><span>Запланировано</span><strong id="plannedCount">0</strong><small>Ожидают выполнения</small></article>
+      <article class="stat-card"><span>В работе</span><strong id="progressCount">0</strong><small>Уже начаты</small></article>
+      <article class="stat-card"><span>Без даты / просрочено</span><strong id="attentionCount">0</strong><small>Требуют внимания</small></article>
+    </section>
+
+    <section class="workspace">
+      <section class="panel form-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">НОВАЯ ЗАПИСЬ</p><h2 id="formTitle">Добавить регион</h2></div>
+          <span class="heading-icon">＋</span>
+        </div>
+        <form id="regionForm">
+          <input type="hidden" id="editId">
+          <label for="regionName">Регион <em>*</em></label>
+          <input id="regionName" required maxlength="80" placeholder="Например, Алматы">
+          <div class="two-col">
+            <div><label for="regionDate">Дата постановки <em>*</em></label><input id="regionDate" type="date" required></div>
+            <div><label for="regionStatus">Статус</label>
+              <select id="regionStatus">
+                <option>Запланирован</option><option>В работе</option><option>Выполнен</option><option>Перенос</option>
+              </select>
+            </div>
+          </div>
+          <label for="regionOwner">Ответственный</label>
+          <input id="regionOwner" maxlength="100" placeholder="ФИО сотрудника">
+          <label for="regionNote">Комментарий</label>
+          <textarea id="regionNote" rows="3" maxlength="300" placeholder="Дополнительная информация (необязательно)"></textarea>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit" id="saveBtn">＋ Добавить в график</button>
+            <button class="btn btn-light hidden" type="button" id="cancelEditBtn">Отмена</button>
+          </div>
+          <p class="privacy-note"><span>●</span> Данные сохраняются в этом браузере на данном устройстве.</p>
+        </form>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="panel-heading table-heading">
+          <div><p class="eyebrow">ЕДИНЫЙ СПИСОК</p><h2>График регионов</h2></div>
+          <div class="filters">
+            <input id="searchInput" type="search" placeholder="Поиск региона…">
+            <select id="statusFilter" aria-label="Фильтр по статусу">
+              <option value="">Все статусы</option><option>Запланирован</option><option>В работе</option><option>Выполнен</option><option>Перенос</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Дата</th><th>Регион</th><th>Ответственный</th><th>Статус</th><th>Комментарий</th><th aria-label="Действия"></th></tr></thead>
+            <tbody id="regionRows"></tbody>
+          </table>
+          <div id="emptyState" class="empty-state">
+            <div class="empty-icon">▦</div><strong>Пока нет регионов в графике</strong>
+            <p>Добавьте первую запись в форме слева.</p>
+          </div>
+        </div>
+        <div class="table-footer"><span id="visibleCount">0 записей</span><button class="text-button" id="clearAllBtn" type="button">Очистить график</button></div>
+      </section>
+    </section>
+    <footer><span>ZETA · График регионов</span><span>Планируйте заранее. Контролируйте точно.</span></footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
